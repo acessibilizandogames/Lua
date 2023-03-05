@@ -8,6 +8,7 @@ local MapID = Game.mapID
 local wardItems = {
 	["wrt"] = {name = "Warding Totem", 		id = 3340, range = 600, icon = "https://vignette.wikia.nocookie.net/leagueoflegends/images/e/e2/Warding_Totem_item.png"},
 	["eof"] = {name = "Eye of Frost", 		id = 3098, range = 600, icon = "https://vignette.wikia.nocookie.net/leagueoflegends/images/2/26/Eye_of_Frost_item.png"},
+	["ctw"] = {name = "Control Ward", 		id = 2055, range = 600, icon = "https://vignette.wikia.nocookie.net/leagueoflegends/images/1/1b/Control_Ward_item.png"}
 }
 
 
