@@ -8,7 +8,6 @@ local MapID = Game.mapID
 local wardItems = {
 	["wrt"] = {name = "Warding Totem", 		id = 3340, range = 600, icon = "https://vignette.wikia.nocookie.net/leagueoflegends/images/e/e2/Warding_Totem_item.png"},
 	["eof"] = {name = "Eye of Frost", 		id = 3098, range = 600, icon = "https://vignette.wikia.nocookie.net/leagueoflegends/images/2/26/Eye_of_Frost_item.png"},
-	["ctw"] = {name = "Control Ward", 		id = 2055, range = 600, icon = "https://vignette.wikia.nocookie.net/leagueoflegends/images/1/1b/Control_Ward_item.png"}
 }
 
 
@@ -23,7 +22,7 @@ local function GetDistance(A, B)
 	return sqrt(ABX * ABX + ABZ * ABZ)
 end
 
-local simpleAutoWard = setmetatable({}, {
+local maxUtilities = setmetatable({}, {
 	__call = function(self)
 		self:__loadTables()
 		self:__loadMenu()
@@ -31,21 +30,21 @@ local simpleAutoWard = setmetatable({}, {
 	end
 })
 
-	function simpleAutoWard:__loadMenu()
+	function maxUtilities:__loadMenu()
 	
-		self.menu = MenuElement({type = MENU, id = "simpleAutoWard", name = "Simple Auto Ward (Logic By Max)"})
+		self.menu = MenuElement({type = MENU, id = "maxUtilities", name = "Simple Auto Ward (Logic By Max)"})
 				self.menu:MenuElement({id = "_e", name = "Enable Ward", value = true})
 				self.menu:MenuElement({id = "_d", name = "Draw Spots", value = true})
 				
 
 	end
 
-	function simpleAutoWard:__loadCallbacks()
+	function maxUtilities:__loadCallbacks()
 		Callback.Add("Tick", function() self:__OnTick() end)
 		Callback.Add("Draw", function() self:__OnDraw() end)
 	end
 
-	function simpleAutoWard:__loadTables()
+	function maxUtilities:__loadTables()
 		self.buffs = {}
 
 		self.itemAmmoStorage = {
@@ -80,7 +79,7 @@ local simpleAutoWard = setmetatable({}, {
 	end
 
 
-	function simpleAutoWard:__OnTick()
+	function maxUtilities:__OnTick()
 		if #self.itemKey == 0 then
 			self.itemKey = {
 				HK_ITEM_1,
@@ -102,7 +101,7 @@ local simpleAutoWard = setmetatable({}, {
 		end
 	end
 
-	function simpleAutoWard:__OnDraw()
+	function maxUtilities:__OnDraw()
 
 			
 				self:doWardDrawings()
@@ -111,7 +110,7 @@ local simpleAutoWard = setmetatable({}, {
 		
 	end
 
-	function simpleAutoWard:__getSlot(id)
+	function maxUtilities:__getSlot(id)
 		for i = 6, 12 do
 			if myHero:GetItemData(i).itemID == id then
 				return i
@@ -121,7 +120,7 @@ local simpleAutoWard = setmetatable({}, {
 		return nil
 	end
 
-	function simpleAutoWard:itemReady(id, ward, pot)
+	function maxUtilities:itemReady(id, ward, pot)
 		local slot = self:__getSlot(id)
 
 		if slot then
@@ -142,7 +141,7 @@ local simpleAutoWard = setmetatable({}, {
 	end
 
 	
-	function simpleAutoWard:castItem(unit, id, range, checked)
+	function maxUtilities:castItem(unit, id, range, checked)
 		if checked or unit == myHero or GetDistance(myHero, unit) <= range then
 			local keyIndex = self:__getSlot(id) - 5
 			local key = self.itemKey[keyIndex]
@@ -158,7 +157,7 @@ local simpleAutoWard = setmetatable({}, {
 	end
 
 --==================== WARD MODULE ====================--
-	function simpleAutoWard:doWardLogic()
+	function maxUtilities:doWardLogic()
 
 		if not (self.lastWard and Timer() - self.lastWard < 2) then 
 			for short, data in pairs(wardItems) do
@@ -181,7 +180,7 @@ local simpleAutoWard = setmetatable({}, {
 		end
 	end
 
-	function simpleAutoWard:doWardDrawings()
+	function maxUtilities:doWardDrawings()
 		for i = 1, #self.wards.preSpots do
 			local wardSpot = Vector(self.wards.preSpots[i]):To2D()
 
@@ -191,7 +190,7 @@ local simpleAutoWard = setmetatable({}, {
 		end
 	end
 
-	function simpleAutoWard:getNearesetWardToPos(pos)
+	function maxUtilities:getNearesetWardToPos(pos)
 		local closest, distance = nil, 999999
 
 		for i = 1, Game.WardCount() do
@@ -211,5 +210,4 @@ local simpleAutoWard = setmetatable({}, {
 	end
 
 
-simpleAutoWard()
-
+maxUtilities()
