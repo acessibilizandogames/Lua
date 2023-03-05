@@ -22,7 +22,7 @@ local function GetDistance(A, B)
 	return sqrt(ABX * ABX + ABZ * ABZ)
 end
 
-local maxUtilities = setmetatable({}, {
+local simpleAutoWard = setmetatable({}, {
 	__call = function(self)
 		self:__loadTables()
 		self:__loadMenu()
@@ -30,21 +30,21 @@ local maxUtilities = setmetatable({}, {
 	end
 })
 
-	function maxUtilities:__loadMenu()
+	function simpleAutoWard:__loadMenu()
 	
-		self.menu = MenuElement({type = MENU, id = "maxUtilities", name = "Simple Auto Ward (Logic By Max)"})
+		self.menu = MenuElement({type = MENU, id = "simpleAutoWard", name = "Simple Auto Ward (Logic By Max)"})
 				self.menu:MenuElement({id = "_e", name = "Enable Ward", value = true})
 				self.menu:MenuElement({id = "_d", name = "Draw Spots", value = true})
 				
 
 	end
 
-	function maxUtilities:__loadCallbacks()
+	function simpleAutoWard:__loadCallbacks()
 		Callback.Add("Tick", function() self:__OnTick() end)
 		Callback.Add("Draw", function() self:__OnDraw() end)
 	end
 
-	function maxUtilities:__loadTables()
+	function simpleAutoWard:__loadTables()
 		self.buffs = {}
 
 		self.itemAmmoStorage = {
@@ -79,7 +79,7 @@ local maxUtilities = setmetatable({}, {
 	end
 
 
-	function maxUtilities:__OnTick()
+	function simpleAutoWard:__OnTick()
 		if #self.itemKey == 0 then
 			self.itemKey = {
 				HK_ITEM_1,
@@ -101,7 +101,7 @@ local maxUtilities = setmetatable({}, {
 		end
 	end
 
-	function maxUtilities:__OnDraw()
+	function simpleAutoWard:__OnDraw()
 
 			
 				self:doWardDrawings()
@@ -110,7 +110,7 @@ local maxUtilities = setmetatable({}, {
 		
 	end
 
-	function maxUtilities:__getSlot(id)
+	function simpleAutoWard:__getSlot(id)
 		for i = 6, 12 do
 			if myHero:GetItemData(i).itemID == id then
 				return i
@@ -120,7 +120,7 @@ local maxUtilities = setmetatable({}, {
 		return nil
 	end
 
-	function maxUtilities:itemReady(id, ward, pot)
+	function simpleAutoWard:itemReady(id, ward, pot)
 		local slot = self:__getSlot(id)
 
 		if slot then
@@ -141,7 +141,7 @@ local maxUtilities = setmetatable({}, {
 	end
 
 	
-	function maxUtilities:castItem(unit, id, range, checked)
+	function simpleAutoWard:castItem(unit, id, range, checked)
 		if checked or unit == myHero or GetDistance(myHero, unit) <= range then
 			local keyIndex = self:__getSlot(id) - 5
 			local key = self.itemKey[keyIndex]
@@ -157,7 +157,7 @@ local maxUtilities = setmetatable({}, {
 	end
 
 --==================== WARD MODULE ====================--
-	function maxUtilities:doWardLogic()
+	function simpleAutoWard:doWardLogic()
 
 		if not (self.lastWard and Timer() - self.lastWard < 2) then 
 			for short, data in pairs(wardItems) do
@@ -180,7 +180,7 @@ local maxUtilities = setmetatable({}, {
 		end
 	end
 
-	function maxUtilities:doWardDrawings()
+	function simpleAutoWard:doWardDrawings()
 		for i = 1, #self.wards.preSpots do
 			local wardSpot = Vector(self.wards.preSpots[i]):To2D()
 
@@ -190,7 +190,7 @@ local maxUtilities = setmetatable({}, {
 		end
 	end
 
-	function maxUtilities:getNearesetWardToPos(pos)
+	function simpleAutoWard:getNearesetWardToPos(pos)
 		local closest, distance = nil, 999999
 
 		for i = 1, Game.WardCount() do
@@ -210,5 +210,5 @@ local maxUtilities = setmetatable({}, {
 	end
 
 
-maxUtilities()
+simpleAutoWard()
 
